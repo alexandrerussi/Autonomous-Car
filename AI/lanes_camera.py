@@ -1,4 +1,4 @@
-import cv2
+import cv2 # importanto opencv
 import numpy as np
 
 
@@ -28,7 +28,7 @@ def average_slope_intercept(image, lines):
     right_line = make_coordinates(image, right_fit_average)
     return np.array([left_line, right_line])
 
-def canny(image):
+def canny(image): # transforma a img de rgb para cinza
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     blur = cv2.GaussianBlur(gray, (5,5), 0)
     canny = cv2.Canny(blur, 50, 150)
@@ -41,28 +41,31 @@ def display_lines(image, lines):
             cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
     return line_image
 
-def region_of_interest(image):
+def region_of_interest(image): # corta img para regiao de interesse
     height = image.shape[0]
     polygons = np.array([
         #[(200, height), (1100, height), (550, 250)]
-        [(50, height), (600, height), (275, 0)]
+        [(50, height), (600, height), (275, 0)] # forma um triangulo
     ])
     mask = np.zeros_like(image)
     cv2.fillPoly(mask, polygons, 255)
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-cap = cv2.VideoCapture(1)
-while(cap.isOpened()):
-    _, frame = cap.read()
+cap = cv2.VideoCapture(1) # captura do video webcam
+while(cap.isOpened()): # loop de tempo indeterinado, enquanto a camera estiver aberto
+    _, frame = cap.read() # leitura da camera, as imagens em si
     canny_image = canny(frame)
     cropped_image = region_of_interest(canny_image)
-    lines = cv2.HoughLinesP(cropped_image, 2, np.pi/180, 100, np.array([]), minLineLength=40, maxLineGap=5)
+
+    #agrupar todos os parametros de linha solicitados e guarda no array lines
+    # lines tera a coordenada total da linha
+    lines = cv2.HoughLinesP(cropped_image, 2, np.pi/180, 100, np.array([]), minLineLength=40, maxLineGap=5) 
     #print(lines)
 
-    left =0
-    right =0
-    if not lines is None:
+    left = 0
+    right = 0
+    if not lines is None: # verificar se existe linha na esquerda e na direita
         for line in list(lines):
             print(list(lines))
             print(line[0])
@@ -79,6 +82,7 @@ while(cap.isOpened()):
         else:
             print("VIRA ESQUERDA")
     
+    # retangulo que aparece na primeira imagem
     point1, point2, point3, point4 = (50, 0), (600, 0), (0, 475), (640,475)
     img = cv2.line(frame, point1, point2, (0,0,255), 2)
     img = cv2.line(frame, point2, point4, (0,0,255), 2)
@@ -88,9 +92,9 @@ while(cap.isOpened()):
     #averaged_lines = average_slope_intercept(frame, lines)
     #line_image = display_lines(frame, averaged_lines)
     #combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 1)
-    cv2.imshow("result", cropped_image)
-    cv2.imshow("frame", frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow("result", cropped_image) # mostra a camera na tela
+    cv2.imshow("frame", frame) # mostra a camera sem filtro nenhum
+    if cv2.waitKey(1) & 0xFF == ord('q'): # aperta q fecha camera
         break
-cap.release()
-cv2.destroyAllWindows()
+cap.release() # ficar executar camera
+cv2.destroyAllWindows() # fecha tudo que tinha antes
