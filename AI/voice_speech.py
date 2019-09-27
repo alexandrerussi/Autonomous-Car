@@ -1,4 +1,3 @@
-
 import pyttsx3
 import engineio
 
@@ -14,31 +13,40 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://alphanumbraskem.firebaseio.com/'
 })
 
-ref = db.reference('/profiles/funcionario1/nome')
-
-print(ref.get())
+nome = db.reference('/profiles/funcionario1/nome')
+planta = db.reference('/plantas/id')
 
 engineio = pyttsx3.init() #inicializa a engine
 voices = engineio.getProperty('voices')
 
-# Lista vozes disponiveis
-# for voice in voices:
-#     if voice.name == 'brazil':
-#         engineio.setProperty('voice', voice.id)
-#     print(voice.name)
-
 engineio.setProperty('rate', 130)    # Aquí puedes seleccionar la velocidad de la voz
-#engineio.setProperty('voice',voices[0].id) # escolhe a voz a ser falada
+# engineio.setProperty('voice',voices[0].id) # escolhe a voz a ser falada
 engineio.setProperty('voice', b'brazil') # passando a voz para ptbr
 
 def speak(text):
     engineio.say(text) # fala a string setada
     engineio.runAndWait() # executa e espera
 
-speak('Olá, ' + str(ref.get()) + '! Meu nome é Alpha!')
+# fala incial de boas vindas
+speak('Olá, ' + str(nome.get()) + '! Meu nome é, Alfa!')
+
+# fala sobre destino de plantas
+if str(planta.get()) == 'p1':
+    speak('Próximo destino: PV14')
+elif str(planta.get()) == 'p2':
+    speak('Próximo destino: P, É3')
+elif str(planta.get()) == 'p3':
+    speak('Próximo destino: PV5')
+
 # while(1):
 #     phrase = input("--> ")
 #     if (phrase == "exit"):
 #         exit(0)
 #     speak(phrase) # seta a string a ser falada
 #     print(voices)
+
+# Lista vozes disponiveis
+# for voice in voices:
+#     if voice.name == 'brazil':
+#         engineio.setProperty('voice', voice.id)
+#     print(voice.name)
