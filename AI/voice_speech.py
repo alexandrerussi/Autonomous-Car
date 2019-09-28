@@ -29,10 +29,12 @@ def speak(text):
 
 # fala incial de boas vindas
 speak('Olá, ' + str(nome.get()) + '! Meu nome é, Alfa!')
+# speak('Hello, ' + str(nome.get()) + '! My name is, Alpha!')
 
 # fala sobre destino de plantas
 if str(planta.get()) == 'p1':
     speak('Próximo destino: PV14')
+    # speak('Next station: PV14')
 elif str(planta.get()) == 'p2':
     speak('Próximo destino: P, É3')
 elif str(planta.get()) == 'p3':
