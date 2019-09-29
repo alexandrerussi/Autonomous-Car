@@ -73,8 +73,11 @@ while True:
     #yellow_upper = np.array([60,255,255],np.uint8)
 
     #green_lower = np.array([22,60,200], np.uint8)
-    green_lower = np.array([110,50,50], np.uint8)
-    green_upper = np.array([130,255,255], np.uint8)
+    # green_lower = np.array([110,50,50], np.uint8)
+    # green_upper = np.array([130,255,255], np.uint8)
+
+    green_lower = np.array([0,200,190], np.uint8)
+    green_upper = np.array([130,255,0], np.uint8)
 
     lower_red = np.array([0,176,240]) 
     upper_red = np.array([130,255,255])
