@@ -52,7 +52,7 @@ def region_of_interest(image): # corta img para regiao de interesse
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-cap = cv2.VideoCapture(1) # captura do video webcam
+cap = cv2.VideoCapture(0) # captura do video webcam
 while(cap.isOpened()): # loop de tempo indeterinado, enquanto a camera estiver aberto
     _, frame = cap.read() # leitura da camera, as imagens em si
     canny_image = canny(frame)
@@ -69,10 +69,10 @@ while(cap.isOpened()): # loop de tempo indeterinado, enquanto a camera estiver a
         for line in list(lines):
             print(list(lines))
             print(line[0])
-            if line[0][0] > 50 and line[0][0] < 275:
+            if line[0][0] > 0 and line[0][0] < 270 and line[0][1] >= 0 and line[0][1] < 200 and (line[0][0]-line[0][2]) < 100:
                 left = 1
 
-            if line[0][0] > 280 and line[0][0] < 600:
+            if line[0][0] > 310 and line[0][0] < 640 and line[0][1] >= 0 and line[0][1] < 200 and (line[0][0]-line[0][2]) < 100:
                 right = 1
 
         if left and right:
